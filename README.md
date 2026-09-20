@@ -116,15 +116,6 @@ Navigate to `http://localhost:4200/` — the app will auto-reload on file change
 | `PUT` | `/Customer/{id}` | Update an existing customer |
 | `DELETE` | `/Customer/{id}` | Delete a customer |
 
----
-
-## 🖼️ Screenshots
-
-> _Add screenshots here after deployment_
-
-| Login | Dashboard |
-|---|---|
-| ![login](docs/login.png) | ![dashboard](docs/dashboard.png) |
 
 ---
 
