@@ -1,0 +1,138 @@
+<div class="min-h-screen bg-gray-100">
+  <!-- Navigation Bar -->
+  <nav class="bg-white shadow-sm border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-16">
+        <div class="flex items-center">
+          <h1 class="text-2xl font-bold text-gray-900 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Customer Manager</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+          <span class="text-gray-600 font-medium hidden sm:block">Hello, {{ userName }}</span>
+          <button (click)="logout()" class="text-sm bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 px-4 py-2 rounded-lg font-semibold transition-colors duration-200">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <main class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    
+    <!-- Top Header & Add Button -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-bold text-gray-800">Customer List</h2>
+      <button (click)="openModal()" class="bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 shadow-md font-medium transition-colors flex items-center gap-2">
+        <span>+</span> Add New Customer
+      </button>
+    </div>
+
+    <!-- Data Table -->
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name & Email</th>
+              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Contact</th>
+              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Address</th>
+              <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            <!-- Table Rows using ngFor -->
+            <tr *ngFor="let c of customers" class="hover:bg-gray-50 transition-colors duration-150">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm font-bold text-gray-900">{{ c.name }}</div>
+                <div class="text-sm text-gray-500">{{ c.email }}</div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-medium">{{ c.phone }}</td>
+              <td class="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">{{ c.address }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span [ngClass]="{'bg-green-100 text-green-700 border-green-200': c.status === 'Active', 'bg-red-100 text-red-700 border-red-200': c.status === 'Inactive'}" 
+                      class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full border">
+                  {{ c.status }}
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-4">
+                <button (click)="openModal(c)" class="text-indigo-600 hover:text-indigo-900 font-semibold">Edit</button>
+                <button (click)="deleteCustomer(c.id)" class="text-red-500 hover:text-red-700 font-semibold">Delete</button>
+              </td>
+            </tr>
+            
+            <!-- Empty State -->
+            <tr *ngIf="customers.length === 0">
+              <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                <p class="text-lg font-medium">No customers found.</p>
+                <p class="text-sm mt-1">Click the "Add New Customer" button to get started.</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add/Edit Modal -->
+  <div *ngIf="showModal" class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+      
+      <!-- Background Overlay -->
+      <div class="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity backdrop-blur-sm" (click)="closeModal()"></div>
+
+      <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+      
+      <!-- Modal Panel -->
+      <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+        
+        <form [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <h3 class="text-xl leading-6 font-bold text-gray-900 mb-6 border-b pb-3">
+              {{ isEditing ? 'Edit Customer' : 'Add New Customer' }}
+            </h3>
+            
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">Name</label>
+                <input formControlName="name" type="text" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">Email</label>
+                <input formControlName="email" type="email" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">Phone</label>
+                <input formControlName="phone" type="text" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm">
+              </div>
+              
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">Address</label>
+                <textarea formControlName="address" rows="2" class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm resize-none"></textarea>
+              </div>
+              
+              <div>
+                <label class="block text-sm font-semibold text-gray-700">Status</label>
+                <select formControlName="status" class="mt-1 block w-full bg-white border border-gray-300 rounded-lg shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent sm:text-sm">
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="bg-gray-50 px-4 py-4 sm:px-6 flex flex-row-reverse gap-3">
+            <button type="submit" [disabled]="customerForm.invalid" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-5 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:w-auto sm:text-sm disabled:opacity-50 disabled:cursor-not-allowed">
+              Save
+            </button>
+            <button type="button" (click)="closeModal()" class="w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-5 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:w-auto sm:text-sm">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
