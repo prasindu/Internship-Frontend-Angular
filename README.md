@@ -1,59 +1,161 @@
-# InternshipFrontendAngular
+# 📇 Customer Manager
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.24.
+A clean, professional customer relationship management (CRM) web application built with **Angular** and **Tailwind CSS**. Manage your customer data with a fast, responsive, and modern interface — complete with authentication, real-time search, and full CRUD functionality.
 
-## Development server
+![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 
-To start a local development server, run:
+---
+
+## ✨ Features
+
+- 🔐 **Authentication** — Secure register & login with JWT-based session handling
+- 👥 **Customer Management** — Create, read, update, and delete customer records
+- 🔍 **Real-time Search** — Instantly filter customers by ID, name, or email
+- 📱 **Fully Responsive** — Optimized for desktop, tablet, and mobile
+- 🎨 **Modern UI** — Clean corporate design system with smooth animations
+- ⚡ **Reactive Forms** — Client-side validation with instant feedback
+- 🗂️ **Status Tracking** — Mark customers as Active / Inactive at a glance
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend Framework | Angular (Standalone Components) |
+| Styling | Tailwind CSS |
+| Forms | Angular Reactive Forms |
+| HTTP Client | Angular HttpClient |
+| State/Auth | LocalStorage + JWT |
+| Backend | REST API (.NET / Node — configurable via `environment.ts`) |
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── login/
+│   │   ├── register/
+│   │   └── customer-dashboard/
+│   ├── services/
+│   │   ├── auth.ts
+│   │   └── customer.ts
+│   └── app.routes.ts
+├── environments/
+│   └── environment.ts
+└── styles.css
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- [Angular CLI](https://angular.io/cli) (v17+)
+
+```bash
+npm install -g @angular/cli
+```
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/customer-manager.git
+cd customer-manager
+
+# Install dependencies
+npm install
+```
+
+### Configuration
+
+Update your API base URL in `src/environments/environment.ts`:
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'https://localhost:5001/api'
+};
+```
+
+### Run the app
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Navigate to `http://localhost:4200/` — the app will auto-reload on file changes.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🔑 Authentication Flow
 
-```bash
-ng generate component component-name
-```
+1. User registers via `/register` → `AuthService.register()`
+2. User logs in via `/login` → JWT token & username stored in `localStorage`
+3. Protected routes (e.g. `/dashboard`) check for a valid token
+4. On `401 Unauthorized`, the user is automatically logged out and redirected
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 📋 API Endpoints Expected
 
-## Building
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/Auth/register` | Register a new user |
+| `POST` | `/Auth/login` | Authenticate and receive JWT |
+| `GET` | `/Customer` | Get all customers |
+| `POST` | `/Customer` | Create a new customer |
+| `PUT` | `/Customer/{id}` | Update an existing customer |
+| `DELETE` | `/Customer/{id}` | Delete a customer |
 
-To build the project run:
+---
+
+## 🖼️ Screenshots
+
+> _Add screenshots here after deployment_
+
+| Login | Dashboard |
+|---|---|
+| ![login](docs/login.png) | ![dashboard](docs/dashboard.png) |
+
+---
+
+## 🧩 Build
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+---
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## 🤝 Contributing
 
-```bash
-ng test
-```
+Contributions, issues, and feature requests are welcome!
 
-## Running end-to-end tests
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-For end-to-end (e2e) testing, run:
+---
 
-```bash
-ng e2e
-```
+## 📄 License
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Distributed under the MIT License. See `LICENSE` for more information.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 👤 Author
+
+**Prasindu Deshan**
