@@ -15,8 +15,6 @@ export class CustomerDashboardComponent implements OnInit {
   private customerService = inject(CustomerService);
   private fb = inject(FormBuilder);
   private router = inject(Router);
-  
-  
   private cdr = inject(ChangeDetectorRef); 
 
   customers: Customer[] = [];
@@ -27,10 +25,11 @@ export class CustomerDashboardComponent implements OnInit {
   isEditing = false;
   editingId: number | null = null;
 
+
   customerForm: FormGroup = this.fb.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    phone: ['', Validators.required],
+    phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]], 
     address: ['', Validators.required],
     status: ['Active', Validators.required]
   });
@@ -49,7 +48,6 @@ export class CustomerDashboardComponent implements OnInit {
     }
   }
   
-
   toggleTheme() {
     this.isDarkMode = !this.isDarkMode;
     if (this.isDarkMode) {
@@ -61,7 +59,6 @@ export class CustomerDashboardComponent implements OnInit {
     }
   }
   
-
   loadCustomers() {
     this.customerService.getCustomers().subscribe({
       next: (data) => {
@@ -120,7 +117,6 @@ export class CustomerDashboardComponent implements OnInit {
           this.closeModal();
         },
         error: () => {
-    
           this.loadCustomers();
           this.closeModal();
         }
@@ -147,7 +143,6 @@ export class CustomerDashboardComponent implements OnInit {
           this.loadCustomers();
         },
         error: () => {
-       
           this.loadCustomers();
         }
       });
@@ -158,5 +153,14 @@ export class CustomerDashboardComponent implements OnInit {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     this.router.navigate(['/login']);
+  }
+
+ 
+  onKeyPress(event: KeyboardEvent) {
+    const charCode = event.which ? event.which : event.keyCode;
+    
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+    }
   }
 }
