@@ -34,11 +34,33 @@ export class CustomerDashboardComponent implements OnInit {
     address: ['', Validators.required],
     status: ['Active', Validators.required]
   });
+  isDarkMode = false;
 
   ngOnInit(): void {
     this.userName = localStorage.getItem('userName');
     this.loadCustomers();
+
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      this.isDarkMode = true;
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }
+  
+
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }
+  
 
   loadCustomers() {
     this.customerService.getCustomers().subscribe({
