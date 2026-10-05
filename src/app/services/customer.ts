@@ -2,16 +2,9 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Customer } from '../models/customer.model';
 
 
-export interface Customer {
-  id?: number;
-  name: string;
-  email: string;
-  phone: string;
-  address: string;
-  status: string;
-}
 
 @Injectable({
   providedIn: 'root'

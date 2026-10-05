@@ -1,7 +1,8 @@
 import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CustomerService, Customer } from '../../services/customer';
+import { CustomerService } from '../../services/customer';
+import { Customer } from '../../models/customer.model';
 import { Router } from '@angular/router';
 
 @Component({
